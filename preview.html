@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>RBS Email Signature Preview</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Raleway", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-200 p-10 flex flex-col items-center gap-12">
+    <!-- ORIGINAL -->
+    <div class="max-w-2xl w-full bg-gray-100 p-6 shadow">
+      <div class="flex gap-6 items-start">
+        <img src="logo.png" class="h-28 rounded object-cover" />
+
+        <div class="flex-1">
+          <h2 class="text-xl font-bold text-emerald-600">Tony Myers</h2>
+          <div class="border-b border-gray-700 w-full my-1"></div>
+
+          <p class="text-sm tracking-wide text-emerald-700">
+            ICT Support | Rangiora Borough School
+          </p>
+
+          <table class="mt-3 text-sm text-gray-800">
+            <tr>
+              <td>
+                <a
+                  href="mailto:tony@rangiora.school.nz"
+                  class="text-gray-600 hover:text-emerald-600"
+                >
+                  tony@rangiora.school.nz
+                </a>
+              </td>
+              <td class="px-4"></td>
+              <td>
+                <a
+                  href="https://rangiora.school.nz"
+                  class="text-gray-600 hover:text-emerald-600"
+                >
+                  rangiora.school.nz
+                </a>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <a
+                  href="https://maps.app.goo.gl/bpvmG3otanAV7S92A"
+                  class="text-gray-600 hover:text-emerald-600"
+                >
+                  64 Church Street, Rangiora
+                </a>
+              </td>
+
+              <td class="px-4"></td>
+
+              <td>
+                <a
+                  href="tel:+6433137434"
+                  class="text-gray-600 hover:text-emerald-600"
+                >
+                  03 313 7434
+                </a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-emerald-600 p-0.5 rounded-lg">
+        <img src="banner.png" class="rounded-lg" />
+      </div>
+    </div>
+
+    <!-- EXAMPLE 1 — LEFT BORDER STYLE -->
+    <div
+      class="max-w-2xl w-full bg-white p-6 shadow border-l-4 border-emerald-600"
+    >
+      <div class="flex gap-5">
+        <img src="logo.png" class="h-24 rounded" />
+
+        <div>
+          <h2 class="text-lg font-bold text-gray-800">Tony Myers</h2>
+
+          <p class="text-emerald-600 text-sm">
+            ICT Support • Rangiora Borough School
+          </p>
+
+          <table class="mt-3 text-sm">
+            <tr>
+              <td>
+                <a
+                  href="mailto:tony@rangiora.school.nz"
+                  class="text-gray-600 hover:text-emerald-600"
+                >
+                  tony@rangiora.school.nz
+                </a>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <a
+                  href="tel:+6433137434"
+                  class="text-gray-600 hover:text-emerald-600"
+                >
+                  03 313 7434
+                </a>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <a
+                  href="https://rangiora.school.nz"
+                  class="text-gray-600 hover:text-emerald-600"
+                >
+                  rangiora.school.nz
+                </a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXAMPLE 2 — COMPACT SIGNATURE -->
+    <div class="max-w-2xl w-full bg-white p-6 shadow">
+      <div class="flex items-center gap-6">
+        <img src="logo.png" class="h-20 rounded" />
+
+        <div>
+          <h2 class="font-bold text-lg text-emerald-600">Tony Myers</h2>
+
+          <p class="text-sm text-gray-600">ICT Support</p>
+
+          <p class="text-xs text-gray-500">Rangiora Borough School</p>
+
+          <p class="mt-2 text-sm text-gray-700">
+            <a
+              href="mailto:tony@rangiora.school.nz"
+              class="hover:text-emerald-600"
+              >Email</a
+            >
+            |
+            <a href="tel:+6433137434" class="hover:text-emerald-600">Phone</a>
+            |
+            <a href="https://rangiora.school.nz" class="hover:text-emerald-600"
+              >Website</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXAMPLE 3 — CORPORATE BLOCK -->
+    <div class="max-w-2xl w-full bg-white p-6 shadow">
+      <table class="w-full">
+        <tr>
+          <td class="w-32">
+            <img src="logo.png" class="h-24 rounded" />
+          </td>
+
+          <td class="pl-6">
+            <h2 class="text-xl font-bold text-gray-800">Tony Myers</h2>
+
+            <p class="text-sm text-emerald-600">ICT Support</p>
+
+            <p class="text-sm text-gray-500 mb-2">Rangiora Borough School</p>
+
+            <p class="text-sm">
+              <a
+                href="mailto:tony@rangiora.school.nz"
+                class="text-gray-600 hover:text-emerald-600"
+              >
+                tony@rangiora.school.nz
+              </a>
+            </p>
+
+            <p class="text-sm">
+              <a
+                href="tel:+6433137434"
+                class="text-gray-600 hover:text-emerald-600"
+              >
+                03 313 7434
+              </a>
+            </p>
+
+            <p class="text-sm">
+              <a
+                href="https://rangiora.school.nz"
+                class="text-gray-600 hover:text-emerald-600"
+              >
+                rangiora.school.nz
+              </a>
+            </p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
