@@ -1,16 +1,24 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import TemplatePicker from './components/editor/TemplatePicker.vue'
 import FieldEditor from './components/editor/FieldEditor.vue'
 import SignaturePreview from './components/preview/SignaturePreview.vue'
 import ExportPanel from './components/export/ExportPanel.vue'
 import { useSignatureStore } from './stores/signature'
+import { presets } from './presets'
 
 const store = useSignatureStore()
 
 const savedLabel = computed(() => {
   if (!store.lastSaved) return null
   return store.lastSaved.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+})
+
+onMounted(() => {
+  const id = new URLSearchParams(window.location.search).get('preset')
+  if (!id) return
+  const preset = presets.find((p) => p.id === id)
+  if (preset) store.importSettings(preset.payload)
 })
 </script>
 
@@ -59,6 +67,7 @@ const savedLabel = computed(() => {
         <div class="flex-shrink-0">
           <ExportPanel />
         </div>
+
       </section>
 
     </main>

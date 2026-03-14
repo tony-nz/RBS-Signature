@@ -21,9 +21,9 @@ const defaults: SignatureData = {
   avatar: '',
   logo: '',
   socials: { linkedin: '', twitter: '', github: '', instagram: '', youtube: '', tiktok: '' },
-  accentColor: '#6366f1',
-  fieldColors: { name: '#111827', title: '#6b7280', body: '#374151', muted: '#9ca3af' },
-  cta: { text: 'Book a Meeting', url: '', bgColor: '#6366f1', textColor: '#ffffff' },
+  accentColor: '#10b981',
+  fieldColors: { name: '#0e6d34', title: '#6b7280', body: '#374151', muted: '#9ca3af' },
+  cta: { text: 'Book a Meeting', url: '', bgColor: '#10b981', textColor: '#ffffff' },
   style: {
     fontFamily: 'Arial',
     fontSize: 'md',
@@ -102,8 +102,8 @@ export const useSignatureStore = defineStore('signature', () => {
   )
 
   function resetToDemo(): void {
-    const avatarSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><circle cx="60" cy="60" r="60" fill="#6366f1"/><text x="60" y="76" text-anchor="middle" font-family="Arial" font-size="42" font-weight="bold" fill="white">JS</text></svg>`
-    const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="44"><rect width="160" height="44" rx="6" fill="#6366f1"/><text x="80" y="30" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="white">ACME</text></svg>`
+    const avatarSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><circle cx="60" cy="60" r="60" fill="#10b981"/><text x="60" y="76" text-anchor="middle" font-family="Arial" font-size="42" font-weight="bold" fill="white">JS</text></svg>`
+    const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="44"><rect width="160" height="44" rx="6" fill="#10b981"/><text x="80" y="30" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="white">ACME</text></svg>`
     const demoAvatar = `data:image/svg+xml;base64,${btoa(avatarSvg)}`
     const demoLogo = `data:image/svg+xml;base64,${btoa(logoSvg)}`
 
@@ -119,8 +119,8 @@ export const useSignatureStore = defineStore('signature', () => {
       meetingUrl: 'https://cal.com/janesmith',
       meetingLabel: 'Book a meeting',
       socials: { linkedin: 'janesmith', twitter: 'janesmith', github: '', instagram: '', youtube: '', tiktok: '' },
-      cta: { text: 'View Portfolio', url: 'https://acmecorp.com', bgColor: '#6366f1', textColor: '#ffffff' },
-      accentColor: '#6366f1',
+      cta: { text: 'View Portfolio', url: 'https://acmecorp.com', bgColor: '#10b981', textColor: '#ffffff' },
+      accentColor: '#10b981',
       fieldColors: { ...defaults.fieldColors },
       style: { ...defaults.style },
       visibility: {
