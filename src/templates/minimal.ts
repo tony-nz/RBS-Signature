@@ -1,0 +1,52 @@
+import type { SignatureTemplate, SignatureData } from '../types'
+import { fontCss, fontSizePx, logoDimPx, dividerHtml, renderSocials, ctaHtml, meetingHtml, disclaimerHtml, resolveColors } from './helpers'
+
+export const minimalTemplate: SignatureTemplate = {
+  id: 'minimal',
+  name: 'Minimal',
+  description: 'Clean text-only with subtle divider',
+  render(data: SignatureData): string {
+    const color = data.accentColor || '#6366f1'
+    const fc = resolveColors(data)
+    const sz = fontSizePx(data)
+    const base = `${fontCss(data)}font-size:${sz.base}px;line-height:1.5;color:${fc.body};`
+
+    const nameLine = data.name
+    const titleLine = [
+      data.title ? data.title : '',
+      data.company ? data.company : '',
+    ].filter(Boolean).join(' &middot; ')
+
+    const contactLine = [
+      data.email ? `<a href="mailto:${data.email}" style="color:${color};text-decoration:none;">${data.email}</a>` : '',
+      data.phone ? `<a href="tel:${data.phone}" style="color:${fc.body};text-decoration:none;">${data.phone}</a>` : '',
+      data.mobile ? `<a href="tel:${data.mobile}" style="color:${fc.body};text-decoration:none;">${data.mobile}</a>` : '',
+      data.website ? `<a href="https://${data.website.replace(/^https?:\/\//, '')}" style="color:${color};text-decoration:none;">${data.website}</a>` : '',
+    ].filter(Boolean).join(' &nbsp;&middot;&nbsp; ')
+
+    const logoHtml = (data.visibility.logo && data.logo)
+      ? (() => { const ld = logoDimPx(data); return `<tr><td style="padding-top:8px;"><img src="${data.logo}" width="${ld}" style="display:block;max-height:${ld}px;object-fit:contain;" /></td></tr>` })()
+      : ''
+
+    return `
+<table cellpadding="0" cellspacing="0" border="0" style="${base}">
+  <tbody>
+    <tr><td style="border-top:2px solid ${color};padding-top:8px;">
+      <table cellpadding="0" cellspacing="0" border="0"><tbody>
+        <tr><td style="font-size:${sz.name}px;font-weight:700;color:${fc.name};">${nameLine}</td></tr>
+        ${titleLine ? `<tr><td style="font-size:${sz.meta}px;color:${fc.title};">${titleLine}</td></tr>` : ''}
+        ${data.tagline ? `<tr><td style="font-size:${sz.meta}px;color:${color};font-style:italic;">${data.tagline}</td></tr>` : ''}
+        ${dividerHtml(data, color)}
+        ${contactLine ? `<tr><td style="padding-top:4px;font-size:${sz.base}px;">${contactLine}</td></tr>` : ''}
+        ${data.address ? `<tr><td style="font-size:${sz.small}px;color:${fc.muted};">${data.address}</td></tr>` : ''}
+        ${meetingHtml(data, color)}
+        ${renderSocials(data, color)}
+        ${ctaHtml(data)}
+        ${logoHtml}
+        ${disclaimerHtml(data)}
+      </tbody></table>
+    </td></tr>
+  </tbody>
+</table>`.trim()
+  },
+}

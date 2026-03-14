@@ -1,0 +1,58 @@
+import type { SignatureTemplate, SignatureData } from '../types'
+import { fontCss, fontSizePx, avatarRadiusCss, avatarDimPx, logoDimPx, dividerHtml, renderSocials, ctaHtml, meetingHtml, disclaimerHtml, resolveColors } from './helpers'
+
+export const modernTemplate: SignatureTemplate = {
+  id: 'modern',
+  name: 'Modern',
+  description: 'Left-border accent with bold name',
+  render(data: SignatureData): string {
+    const color = data.accentColor || '#6366f1'
+    const fc = resolveColors(data)
+    const sz = fontSizePx(data)
+    const base = `${fontCss(data)}font-size:${sz.base}px;line-height:1.5;color:${fc.body};`
+
+    const avatarDim = avatarDimPx(data)
+    const radius = avatarRadiusCss(data)
+
+    const leftParts: string[] = []
+    if (data.visibility.avatar && data.avatar) {
+      leftParts.push(`<img src="${data.avatar}" width="${avatarDim}" height="${avatarDim}" style="border-radius:${radius};display:block;object-fit:cover;" />`)
+    }
+    if (data.visibility.logo && data.logo) {
+      const ld = logoDimPx(data)
+      leftParts.push(`<img src="${data.logo}" width="${ld}" style="display:block;max-height:${ld}px;object-fit:contain;${leftParts.length ? 'margin-top:8px;' : ''}" />`)
+    }
+    const avatarCell = leftParts.length
+      ? `<td style="padding-right:14px;vertical-align:top;">${leftParts.join('')}</td>`
+      : ''
+
+    const nameLine = data.name
+    const metaParts: string[] = []
+    if (data.title) metaParts.push(data.title)
+    if (data.company) metaParts.push(data.company)
+
+    return `
+<table cellpadding="0" cellspacing="0" border="0" style="${base}">
+  <tbody><tr>
+    ${avatarCell}
+    <td style="border-left:3px solid ${color};padding-left:14px;vertical-align:top;">
+      <table cellpadding="0" cellspacing="0" border="0"><tbody>
+        <tr><td style="font-size:${sz.name}px;font-weight:700;color:${fc.name};">${nameLine}</td></tr>
+        ${metaParts.length ? `<tr><td style="font-size:${sz.meta}px;color:${fc.title};padding-top:1px;">${metaParts.join(' &bull; ')}</td></tr>` : ''}
+        ${data.tagline ? `<tr><td style="font-size:${sz.meta}px;color:${color};font-style:italic;padding-top:1px;">${data.tagline}</td></tr>` : ''}
+        ${dividerHtml(data, color)}
+        ${data.email ? `<tr><td style="padding-top:5px;font-size:${sz.base}px;"><a href="mailto:${data.email}" style="color:${color};text-decoration:none;">${data.email}</a></td></tr>` : ''}
+        ${data.phone ? `<tr><td style="font-size:${sz.base}px;"><a href="tel:${data.phone}" style="color:${fc.body};text-decoration:none;">${data.phone}</a></td></tr>` : ''}
+        ${data.mobile ? `<tr><td style="font-size:${sz.base}px;color:${fc.title};">M: <a href="tel:${data.mobile}" style="color:${fc.body};text-decoration:none;">${data.mobile}</a></td></tr>` : ''}
+        ${data.website ? `<tr><td style="font-size:${sz.base}px;"><a href="https://${data.website.replace(/^https?:\/\//, '')}" style="color:${color};text-decoration:none;">${data.website}</a></td></tr>` : ''}
+        ${data.address ? `<tr><td style="font-size:${sz.small}px;color:${fc.muted};">${data.address}</td></tr>` : ''}
+        ${meetingHtml(data, color)}
+        ${renderSocials(data, color)}
+        ${ctaHtml(data)}
+        ${disclaimerHtml(data)}
+      </tbody></table>
+    </td>
+  </tr></tbody>
+</table>`.trim()
+  },
+}

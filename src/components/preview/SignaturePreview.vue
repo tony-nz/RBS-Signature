@@ -1,0 +1,55 @@
+<script setup lang="ts">
+import { useSignatureStore } from '../../stores/signature'
+
+const store = useSignatureStore()
+</script>
+
+<template>
+  <div class="flex flex-col gap-3 h-full">
+    <div class="flex items-center justify-between">
+      <span class="text-sm font-semibold text-slate-700">Preview</span>
+      <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-full">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        Live
+      </span>
+    </div>
+
+    <!-- Email chrome mock -->
+    <div class="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden flex-1">
+      <!-- Fake email header -->
+      <div class="border-b border-slate-100 px-4 py-3 bg-slate-50">
+        <div class="flex items-center gap-1.5 mb-2.5">
+          <div class="w-3 h-3 rounded-full bg-red-400"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+          <div class="w-3 h-3 rounded-full bg-green-400"></div>
+        </div>
+        <div class="text-xs text-slate-400 space-y-1">
+          <div><span class="text-slate-500 font-medium">From:</span> {{ store.data.name || 'Your Name' }} &lt;{{ store.data.email || 'you@email.com' }}&gt;</div>
+          <div><span class="text-slate-500 font-medium">Subject:</span> Following up on our conversation</div>
+        </div>
+      </div>
+
+      <!-- Email body -->
+      <div class="px-5 py-5">
+        <p class="text-sm text-slate-500 mb-6 leading-relaxed">
+          Hi there,<br /><br />
+          Just wanted to follow up on our last conversation. Looking forward to hearing from you soon.
+          <br /><br />
+          Best,
+        </p>
+
+        <!-- Signature rendered via v-html -->
+        <div v-html="store.renderedHtml" class="signature-container"></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.signature-container {
+  /* isolate the signature from Tailwind resets */
+  all: initial;
+  display: block;
+  font-family: Arial, sans-serif;
+}
+</style>
