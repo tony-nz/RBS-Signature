@@ -27,10 +27,41 @@ function applyUrl() {
   showUrlInput.value = false
 }
 
+const converting = ref(false)
+const convertError = ref('')
+
+async function convertToBase64() {
+  const src = store.data[props.field]
+  if (!src?.startsWith('http')) return
+  converting.value = true
+  convertError.value = ''
+  try {
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    await new Promise<void>((resolve, reject) => {
+      img.onload = () => resolve()
+      img.onerror = () => reject(new Error('Failed to load image'))
+      img.src = src
+    })
+    const canvas = document.createElement('canvas')
+    canvas.width = img.naturalWidth
+    canvas.height = img.naturalHeight
+    const ctx = canvas.getContext('2d')!
+    ctx.drawImage(img, 0, 0)
+    store.data[props.field] = canvas.toDataURL('image/png')
+    urlInput.value = ''
+  } catch {
+    convertError.value = 'Could not convert — try uploading the file directly'
+  } finally {
+    converting.value = false
+  }
+}
+
 function clear() {
   store.data[props.field] = ''
   urlInput.value = ''
   showUrlInput.value = false
+  convertError.value = ''
   if (inputRef.value) inputRef.value.value = ''
 }
 </script>
@@ -50,8 +81,12 @@ function clear() {
       <div v-if="!showUrlInput" class="flex gap-1.5">
         <button @click="inputRef?.click()" class="action-btn">Upload</button>
         <button @click="showUrlInput = true" class="action-btn">URL</button>
+        <button v-if="current()?.startsWith('http')" @click="convertToBase64" :disabled="converting" class="action-btn" :title="'Embed image as base64 so no external hosting is needed'">
+          {{ converting ? 'Converting…' : 'Embed' }}
+        </button>
         <button v-if="current()" @click="clear" class="action-btn text-red-400 hover:text-red-600">✕</button>
       </div>
+      <p v-if="convertError" class="text-xs text-red-500">{{ convertError }}</p>
 
       <!-- URL input (inline) -->
       <div v-else class="flex gap-1.5 flex-1">
