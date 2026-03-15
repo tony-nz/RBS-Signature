@@ -63,7 +63,56 @@ function mergeWithDefaults(d: SignatureData, templateId: string) {
   }
 }
 
+// Top-level string fields on SignatureData that can be set via URL params
+const URL_PARAM_FIELDS = [
+  'name', 'title', 'company', 'email', 'phone', 'mobile',
+  'website', 'address', 'tagline', 'meetingUrl', 'meetingLabel',
+  'disclaimer', 'avatar', 'logo', 'accentColor',
+] as const
+
+// Social platform keys that can be set via URL params (e.g. ?linkedin=janesmith)
+const SOCIAL_FIELDS = [
+  'linkedin', 'twitter', 'github', 'instagram', 'youtube', 'tiktok',
+] as const
+
+function applyUrlParams(result: { data: SignatureData; templateId: string }): { data: SignatureData; templateId: string } {
+  const params = new URLSearchParams(window.location.search)
+
+  // Support ?firstname=Jane&lastname=Smith → name = "Jane Smith"
+  const firstName = params.get('firstname')
+  const lastName = params.get('lastname')
+  if (firstName || lastName) {
+    result.data.name = [firstName, lastName].filter(Boolean).join(' ')
+  }
+
+  // Apply simple string fields (e.g. ?email=foo@bar.com&phone=555-1234)
+  for (const field of URL_PARAM_FIELDS) {
+    const value = params.get(field)
+    if (value !== null) {
+      result.data[field] = value
+    }
+  }
+
+  // Apply social fields (e.g. ?linkedin=janesmith&twitter=janesmith)
+  for (const social of SOCIAL_FIELDS) {
+    const value = params.get(social)
+    if (value !== null) {
+      result.data.socials[social] = value
+    }
+  }
+
+  // Allow overriding template via ?template=modern
+  const templateParam = params.get('template')
+  if (templateParam) {
+    result.templateId = templateParam
+  }
+
+  return result
+}
+
 function loadSaved(): { data: SignatureData; templateId: string } {
+  let result: { data: SignatureData; templateId: string } | null = null
+
   try {
     // URL preset param takes priority over localStorage
     const presetId = new URLSearchParams(window.location.search).get('preset')
@@ -71,19 +120,27 @@ function loadSaved(): { data: SignatureData; templateId: string } {
       const preset = presets.find((p) => p.id === presetId)
       if (preset) {
         const parsed = JSON.parse(preset.payload)
-        return mergeWithDefaults(parsed.data, parsed.templateId)
+        result = mergeWithDefaults(parsed.data, parsed.templateId)
       }
     }
   } catch { /* ignore */ }
 
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return { data: { ...defaults }, templateId: 'modern' }
-    const saved = JSON.parse(raw)
-    return mergeWithDefaults(saved.data, saved.templateId)
-  } catch {
-    return { data: { ...defaults }, templateId: 'modern' }
+  if (!result) {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY)
+      if (!raw) {
+        result = { data: { ...defaults }, templateId: 'modern' }
+      } else {
+        const saved = JSON.parse(raw)
+        result = mergeWithDefaults(saved.data, saved.templateId)
+      }
+    } catch {
+      result = { data: { ...defaults }, templateId: 'modern' }
+    }
   }
+
+  // URL query params override individual fields on top of preset/localStorage
+  return applyUrlParams(result)
 }
 
 export const useSignatureStore = defineStore('signature', () => {
